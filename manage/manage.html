@@ -1,35 +1,35 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>User CSS</title>
+    <title>Injector</title>
     <meta charset="utf-8" />
     <link rel='stylesheet' href='manage.css' />
   </head>
   <body>
     <header>
-      <h1>User CSS Manager</h1>
+      <h1>Injection Manager</h1>
     </header>
     <div id="container">
       <aside>
         <div id="list-container">
           <ul id="list"></ul>
         </div>
-        <a id="new" class="selector" href="#new">New User CSS</a>
+        <a id="new" class="selector" href="#new">New Injection</a>
       </aside>
       <section>
-        <h1 id="title">New User CSS</h1>
+        <h1 id="title">New Injection</h1>
         <form id="form">
           <fieldset>
             <p>
-              <label for="enabled">Enabled:</label>
+              <label for="enabled">Enabled</label>
               <input name="enabled" type="checkbox" />
             </p>
             <p>
-              <label for="name">Name:</label>
+              <label for="name">Name</label>
               <input name="name" type="text" placeholder="Untitled" />
             </p>
             <p>
-              <label for="domains">URLs:</label>
+              <label for="domains">URLs</label>
               <span class="label" id="label-includes">
                 <span class="text">Includes</span>:
               </span>
@@ -44,13 +44,20 @@
               </span>
             </p>
             <p>
-              <label for="styles">Styles:</label>
+              <label for="styles">Styles</label>
               <textarea name="styles"></textarea>
               <span class="description">
-                <strong>Required</strong>. 
                 To override page style, put <strong>!important</strong>
                 at the end of each style.
               </span>
+            </p>
+            <p>
+              <label for="script">Script</label>
+              <textarea name="script"></textarea>
+            </p>
+            <p>
+              <label for="onload">Run script on full load</label>
+              <input name="onload" type="checkbox" />
             </p>
             <p class="submit">
               <input name="save" type="submit" value="Save" />
@@ -59,7 +66,6 @@
         </form>
       </section>
     </div>
-    <script src="../share/mootools.js"></script>
     <script src="../share/storage.js"></script>
     <script src="manage.js"></script>
   </body>

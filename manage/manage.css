@@ -2,11 +2,11 @@
  * ----------------------------------------------------------------------- */
 
 body {
-    margin: 0; padding: 0;
+    margin: 0;
     background-color: #f0f0f0;
-    font-family: "Lucida Grande", "Lucida", "Verdana", sans-serif;
+    font-family: "Lucida Grande", sans-serif;
     font-size: 14px/100%;
-    -khtml-user-select: none;
+    -webkit-user-select: none;
 }
 
 header {
@@ -16,7 +16,7 @@ header {
 /* Layout
  * ----------------------------------------------------------------------- */
 
-div#container {
+#container {
     position: absolute;
     overflow: hidden;
     margin: 8px;
@@ -25,8 +25,8 @@ div#container {
     -webkit-box-orient: horizontal;
 }
 
-div#container aside,
-div#container section {
+#container > aside,
+#container > section {
     display: -webkit-box;
     -webkit-box-orient: vertical;
     position: absolute;
@@ -34,13 +34,13 @@ div#container section {
     background-color: #fff;
 }
 
-div#container aside {
+#container > aside {
     width: 199px;
     border: 1px solid #bebebe;
     border-top-color: #8e8e8e;
 }
 
-div#container section {
+#container > section {
     display: block;
     -webkit-box-flex: 1;
     left: 201px; right: 0;
@@ -53,7 +53,7 @@ div#container section {
 /* Sidebar
  * ----------------------------------------------------------------------- */
 
-aside div#list-container {
+#list-container {
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-box-flex: 1;
@@ -61,7 +61,7 @@ aside div#list-container {
     overflow-x: hidden;
 }
 
-aside ul {
+#list {
     -webkit-box-flex: 1;
     margin: 0; padding: 0;
     list-style: none;
@@ -69,12 +69,12 @@ aside ul {
     background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(white), color-stop(0.49999, white), color-stop(0.5, rgb(247, 247, 247)), to(rgb(247, 247, 247)));
 }
 
-aside li {
+#list > li {
     position: relative;
     margin: 0; padding: 0;
 }
 
-aside a.selector {
+.selector {
     display: block;
     padding: 10px;
     text-decoration: none;
@@ -82,18 +82,18 @@ aside a.selector {
     color: #000;
 }
 
-aside a.selector.disabled {
+.selector.disabled {
     color: #888;
 }
 
-aside a.selector.current {
+.selector.current {
     color: #fff;
     font-weight: bold;
     text-shadow: 0 1px 0 #333;
-    background-image: -webkit-gradient(linear, left top, left bottom, from(#5b92d5), to(#1654ab));
+    background-image: linear-gradient(0deg, #1654ab, #5b92d5);
 }
 
-aside li a.delete {
+.delete {
     display: block;
     position: absolute;
     visibility: hidden;
@@ -103,27 +103,27 @@ aside li a.delete {
     height: 14px;
     background-image: url(resource/ExtensionClose.png);
     background-repeat: no-repeat;
-    text-indent: -10000em;
 }
 
-aside li:hover a.delete {
+#list > li:hover .delete {
     visibility: visible;
 }
 
-aside li a.delete:hover {
+.delete:hover {
     background-image: url(resource/ExtensionCloseHovered.png);
 }
 
-aside a#new {
+#new {
     display: block;
     background-color: #fff;
     border-top: 1px solid #bebebe;
+    outline: none;
 }
 
 /* Content area
  * ----------------------------------------------------------------------- */
 
-section h1 {
+h1 {
     margin: 0 0 10px; padding: 9px 15px;
     border-bottom: 1px solid #d6d6d6;
     text-shadow: 0 1px 0 #fff;
@@ -131,22 +131,22 @@ section h1 {
     color: #404040;
 }
 
-section form {
+#form {
     -webkit-box-flex: 2;
 }
 
-section fieldset {
+fieldset {
     margin: 15px; padding: 0;
     border: 0;
 }
 
-section fieldset p {
+p {
     /* https://bugs.webkit.org/show_bug.cgi?id=16662 
      * I wish Safari 5 supported this yesterday. */
     margin-left: 20%;
 }
 
-section fieldset label {
+label {
     float: left;
     margin: 3px 0 0 -20%; padding: 0;
     width: 19%; /* So we have a little nice spacing */
@@ -155,41 +155,39 @@ section fieldset label {
     color: #666;
 }
 
-section fieldset span.label {
+.label {
     display: block;
     padding: 3px 5px;
     /* This feels a bit out of place. But works for the time being. */
-    background-image: -webkit-gradient(linear, left top, left bottom, from(#f3f3f3), color-stop(0.1, #e5e5e5), to(#d1d1d1));
+    background-image: linear-gradient(0deg, #d1d1d1, #e5e5e5);
     border: 1px solid #999;
+    border-bottom-width: 0;
+    width: 75%;
     font-size: 11px;
     font-weight: bold;
     text-shadow: 0 1px 0 #fff;
     color: #6e6e6e;
+    cursor: pointer;
 }
 
-section fieldset span.label.hidden,
-section fieldset span.label.expanded {
-    cursor: pointer !important;
-}
-
-section fieldset span.label.expanded > span.text:before {
+.label.expanded > .text:before {
     content: url(../share/triangle-down.png);
     margin-right: 4px;
     float: left;
 }
 
-section fieldset span.label.hidden {
+.label.hidden {
     border-bottom: 1px solid #999 !important;
     margin-bottom: 4px;
 }
 
-section fieldset span.label.hidden > span.text:before {
+.label.hidden > .text:before {
     content: url(../share/triangle-right.png);
     margin-right: 4px;
     float: left;
 }
 
-section fieldset span.description {
+.description {
     display: block;
     font-size: 11px;
     line-height: 11px;
@@ -197,35 +195,28 @@ section fieldset span.description {
     color: #aaa;
 }
 
-section fieldset input[type="text"],
-section fieldset textarea {
+input[type="text"], textarea {
     font-size: 13px;
     max-width: 90%;
 }
 
-section fieldset span#label-includes,
-section fieldset span#label-excludes {
-    border-bottom: none;
-    width: 75%;
-}
-
-section fieldset textarea {
+textarea {
     padding: 5px;
 }
 
-section fieldset input[name="name"] {
+input[name="name"] {
     width: 35%;
 }
 
-section fieldset textarea[name="domains"],
-section fieldset textarea[name="excludes"] {
+textarea[name="domains"],
+textarea[name="excludes"] {
     width: 75%;
     min-width: 75%;
     max-width: 75%;
     height: 50px;
 }
 
-section fieldset textarea[name="styles"] {
+textarea[name="styles"], textarea[name="script"] {
     font-family: monospace;
     width: 75%;
     height: 200px;

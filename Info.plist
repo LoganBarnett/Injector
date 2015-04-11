@@ -3,43 +3,43 @@
 <plist version="1.0">
 <dict>
 	<key>Author</key>
-	<string>Kridsada Thanabulpong</string>
+	<string>Trevor Behlman</string>
 	<key>Builder Version</key>
-	<string>7534.48.3</string>
+	<string>9537.85.12.18</string>
 	<key>CFBundleDisplayName</key>
-	<string>User CSS</string>
+	<string>Injector</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.gridth.usercss</string>
+	<string>com.tsbehlman.injector</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.3.2</string>
+	<string>1.1</string>
 	<key>CFBundleVersion</key>
-	<string>4.6</string>
+	<string>1.1</string>
 	<key>Chrome</key>
 	<dict>
 		<key>Context Menu Items</key>
 		<array>
 			<dict>
 				<key>Command</key>
-				<string>manage-user-css</string>
+				<string>launch-injector</string>
 				<key>Identifier</key>
-				<string>ManageUserCssItem</string>
+				<string>LaunchInjector</string>
 				<key>Title</key>
-				<string>Manage User CSS</string>
+				<string>Inject Style/Script</string>
 			</dict>
 		</array>
 		<key>Global Page</key>
-		<string>usercss/globals.html</string>
+		<string>injector/globals.html</string>
 		<key>Toolbar Items</key>
 		<array>
 			<dict>
 				<key>Identifier</key>
-				<string>manage-user-css</string>
+				<string>launch-injector</string>
 				<key>Image</key>
 				<string>share/toolbar.png</string>
 				<key>Label</key>
-				<string>User CSS</string>
+				<string>Injector</string>
 			</dict>
 		</array>
 	</dict>
@@ -48,8 +48,8 @@
 		<key>Scripts</key>
 		<dict/>
 	</dict>
-	<key>Description</key>
-	<string>Extension that will easily enable you to override stylesheets for any web page for anything.</string>
+	<key>DeveloperIdentifier</key>
+	<string>VE6CSLGJ83</string>
 	<key>ExtensionInfoDictionaryVersion</key>
 	<string>1.0</string>
 	<key>Permissions</key>
@@ -63,8 +63,8 @@
 		</dict>
 	</dict>
 	<key>Update Manifest URL</key>
-	<string>http://code.grid.in.th/update.plist</string>
+	<string>http://www.tbehlman.com/safari/updateInjector.plist</string>
 	<key>Website</key>
-	<string>http://code.grid.in.th/</string>
+	<string>http://www.tbehlman.com/</string>
 </dict>
 </plist>
