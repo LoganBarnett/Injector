@@ -62,7 +62,7 @@ var Manager = {
 
     $n: function(key) { return 'item-'+key; },
     $p: function(key) { return document.getElementById(Manager.$n(key)); },
-    $a: function(key) { return Manager.$p(key).getChildren('a')[0]; },
+    $a: function(key) { return Manager.$p(key).getElementsByTagName('a')[0]; },
 
     reloadStyles: function(){
         safari.self.tab.dispatchMessage('reloadStyles');
@@ -107,9 +107,9 @@ var Manager = {
                     next = element.getNext(),
                     target = document.getElementById('new');
                 if (next) {
-                    target = next.getChildren('a')[0];
+                    target = next.getElementsByTagName('a')[0];
                 } else if (prev) {
-                    target = prev.getChildren('a')[0];
+                    target = prev.getElementsByTagName('a')[0];
                 }
                 target.click();
             }
@@ -167,9 +167,12 @@ var Manager = {
         form.__submitFn && form.removeEventListener('submit', form.__submitFn, false); // Cleanup
         if (fn) {
             form.__submitFn = function(event){
-                event.stop();
                 var formData = Manager.constructDataFromForm(data, this);
                 fn(formData);
+                
+                // Don't refresh the page
+                event.preventDefault();
+                return false;
             };
             form.addEventListener('submit', form.__submitFn, false);
         }
@@ -187,9 +190,9 @@ var Manager = {
                 name = this.name.value;
             Manager.setTitle(name);
             element.textContent = name;
-            element.removeClass('disabled');
+            element.classList.remove('disabled');
             if (!formData.enabled)
-                element.addClass('disabled');
+                element.classList.add('disabled');
         });
     },
 
@@ -202,10 +205,10 @@ var Manager = {
                 if (!formData.name)
                     formData.name = key;
                 var item = Manager.createItem(key, formData);
-                item.getChildren('a')[0].fireEvent('click');
+                item.getElementsByTagName('a')[0].click();
                 Manager.reloadStyles();
                 if (!formData.enabled)
-                    item.addClass('disabled');
+                    item.classList.add('disabled');
             }
         });
     }

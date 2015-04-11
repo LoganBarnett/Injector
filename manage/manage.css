@@ -66,7 +66,7 @@ header {
     margin: 0; padding: 0;
     list-style: none;
     -webkit-background-size: auto 70px;
-    background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(white), color-stop(0.49999, white), color-stop(0.5, rgb(247, 247, 247)), to(rgb(247, 247, 247)));
+    background-image: linear-gradient(0deg, #f7f7f7, #f7f7f7 50%, #fff 50%);
 }
 
 #list > li {
