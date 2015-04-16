@@ -69,9 +69,10 @@ header {
     background-image: linear-gradient(0deg, #f7f7f7, #f7f7f7 50%, #fff 50%);
 }
 
-#list > li {
+#list > a {
+    display: block;
     position: relative;
-    margin: 0; padding: 0;
+    margin: 0;
 }
 
 .selector {
@@ -105,7 +106,7 @@ header {
     background-repeat: no-repeat;
 }
 
-#list > li:hover .delete {
+#list > a:hover > .delete {
     visibility: visible;
 }
 
@@ -123,8 +124,9 @@ header {
 /* Content area
  * ----------------------------------------------------------------------- */
 
-h1 {
-    margin: 0 0 10px; padding: 9px 15px;
+h2 {
+    margin: 0 0 10px;
+    padding: 9px 15px;
     border-bottom: 1px solid #d6d6d6;
     text-shadow: 0 1px 0 #fff;
     font-size: 16px;
@@ -148,7 +150,8 @@ p {
 
 label {
     float: left;
-    margin: 3px 0 0 -20%; padding: 0;
+    margin: 3px 0 0 -20%;
+    padding: 0;
     width: 19%; /* So we have a little nice spacing */
     text-align: right;
     font-size: 13px;
@@ -159,21 +162,15 @@ label {
     display: block;
     padding: 3px 5px;
     /* This feels a bit out of place. But works for the time being. */
-    background-image: linear-gradient(0deg, #d1d1d1, #e5e5e5);
+    background-image: linear-gradient(0deg, #ddd, #eee);
     border: 1px solid #999;
     border-bottom-width: 0;
     width: 75%;
     font-size: 11px;
     font-weight: bold;
     text-shadow: 0 1px 0 #fff;
-    color: #6e6e6e;
+    color: #777;
     cursor: pointer;
-}
-
-.label.expanded > .text:before {
-    content: url(../share/triangle-down.png);
-    margin-right: 4px;
-    float: left;
 }
 
 .label.hidden {
@@ -181,10 +178,20 @@ label {
     margin-bottom: 4px;
 }
 
+.label > .text:before {
+    content: url(../share/triangle-down.png);
+    margin-right: 4px;
+    float: left;
+}
+
 .label.hidden > .text:before {
     content: url(../share/triangle-right.png);
     margin-right: 4px;
     float: left;
+}
+
+.label.hidden + textarea {
+    display: none;
 }
 
 .description {
