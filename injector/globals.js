@@ -40,9 +40,30 @@ function handleCommand(event) {
     case 'launch-injector':
         var manageURL = safari.extension.baseURI + 'manage/manage.html',
             currentWindow = safari.application.activeBrowserWindow,
-            currentTab = currentWindow.activeTab;
-        if (currentTab.url === "")    currentTab.url = manageURL;
-        else currentWindow.openTab('foreground').url = manageURL;
+            currentTab = currentWindow.activeTab,
+            url = currentTab.url;
+        
+        if (url === "") {
+            currentTab.url = manageURL;
+        }
+        else {
+            var includes,
+                styleKey = "";
+            styleStorage.each( function( key, data ) {                
+                for( var i = 0; i < data.domains.length; i++ ) {
+                    if( new RegExp( data.domains[i] ).test( url ) ) {
+                        styleKey = key;
+                        return true; // break all
+                    }
+                }
+            } );
+            
+            if( styleKey === "" ) {
+                styleKey = "new," + encodeURIComponent( url );
+            }
+            
+            currentWindow.openTab('foreground').url = manageURL + "#" + styleKey;
+        }
         break;
     default:
         break;

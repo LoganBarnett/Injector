@@ -17,6 +17,8 @@ var Manager = {
     newLink: null,
     includeLabel: null,
     excludeLabel: null,
+    cssLabel: null,
+    jsLabel: null,
     
     current: null,
     
@@ -59,6 +61,8 @@ var Manager = {
         Manager.newLink = document.getElementById( 'new' );
         Manager.includeLabel = document.getElementById( 'label-includes' );
         Manager.excludeLabel = document.getElementById( 'label-excludes' );
+        Manager.cssLabel = document.getElementById( 'label-css' );
+        Manager.jsLabel = document.getElementById( 'label-js' );
         
         Manager.createItems();
 
@@ -70,13 +74,10 @@ var Manager = {
             }
         }, false );
 
-        document.getElementById( 'label-includes' )
-            .addEventListener( 'click', Manager.clickLabel, false );
-        document.getElementById( 'label-excludes' )
-            .addEventListener( 'click', Manager.clickLabel, false );
-
-        /* Defaults */
-        Manager.newLink.click();
+        Manager.includeLabel.addEventListener( 'click', Manager.clickLabel, false );
+        Manager.excludeLabel.addEventListener( 'click', Manager.clickLabel, false );
+        Manager.cssLabel.addEventListener( 'click', Manager.clickLabel, false );
+        Manager.jsLabel.addEventListener( 'click', Manager.clickLabel, false );
     },
 
     getItemId: function( key ) {
@@ -94,9 +95,11 @@ var Manager = {
         document.getElementById('title').textContent = title;
     },
 
-    setDomainsLabelState: function( includes, excludes ) {
-        Manager.showLabel( Manager.includeLabel );
+    setLabelState: function( includes, excludes, styles, script ) {
+        ( includes ? Manager.showLabel : Manager.hideLabel )( Manager.includeLabel );
         ( excludes ? Manager.showLabel : Manager.hideLabel )( Manager.excludeLabel );
+        ( styles ? Manager.showLabel : Manager.hideLabel )( Manager.cssLabel );
+        ( script ? Manager.showLabel : Manager.hideLabel )( Manager.jsLabel );
     },
 
     createItem: function( key, data ) {
@@ -173,16 +176,13 @@ var Manager = {
         Manager.form.onload.checked = data.onload;
         Manager.form.enabled.checked = data.enabled;
 
-        /* Display */
-        Manager.setDomainsLabelState( data.domains.length, data.excludes.length );
-
         Manager.form._submitCallback && Manager.form.removeEventListener( 'submit', Manager.form._submitCallback, false ); // Cleanup
         
         Manager.form._submitCallback = function( e ) {
             callback( Manager.constructDataFromForm( data ) );
             
             // Don't refresh the page
-            event.preventDefault();
+            e.preventDefault();
             return false;
         };
         
@@ -191,6 +191,7 @@ var Manager = {
 
     bindEditForm: function(key, data){
         Manager.setTitle( data.name );
+        Manager.setLabelState( data.domains.length, data.excludes.length, data.styles.length, data.script.length );
         Manager.bindForm( data, function( formData ) {
             if( formData.name && ( formData.styles || formData.script ) && formData.domains ) {
                 Manager.setItem( key, formData );
@@ -198,7 +199,7 @@ var Manager = {
                 var item = Manager.getListItem( key );
                 // Always update display
                 Manager.setTitle( formData.name );
-                item.textContent = formData.name;
+                item.childNodes[0].nodeValue = formData.name;
                 
                 if( formData.enabled ) {
                     item.classList.remove( 'disabled' );
@@ -214,7 +215,8 @@ var Manager = {
 
     bindNewForm: function() {
         Manager.setTitle( 'New Injection' );
-        Manager.bindForm( { domains: [], excludes: [] }, function( formData ) {
+        Manager.setLabelState( true, false, true, true );
+        Manager.bindForm( { enabled: true, domains: [], excludes: [] }, function( formData ) {
             var key = Date.now();
             if( formData.name && ( formData.styles || formData.script ) && formData.domains ) {
                 Manager.setItem( key, formData );
@@ -239,6 +241,21 @@ function handleMessage( event ) {
         event.message.forEach( function( item ) {
             Manager.createItem( item.key, item.data );
         } );
+        
+        var hash = window.location.hash;
+        
+        if( hash.indexOf( "new", 1 ) === 1 ) {
+            Manager.newLink.click();
+            if( hash.length > 4 ) {
+                Manager.form.domains.value = decodeURIComponent( hash.substring( 5 ) );
+            }
+        }
+        else if( hash.length > 0 ) {
+            Manager.getListItem( hash.substring( 1 ) ).click();
+        }
+        else {
+            Manager.newLink.click();
+        }
         break;
     case 'getItem':
         Manager.bindEditForm( event.message[0], event.message[1] );

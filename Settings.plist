@@ -3,14 +3,14 @@
 <plist version="1.0">
 <array>
 	<dict>
-		<key>DefaultValue</key>
-		<true/>
-		<key>Key</key>
-		<string>enableContextMenu</string>
 		<key>Title</key>
 		<string>Enable contextual menu</string>
+		<key>Key</key>
+		<string>enableContextMenu</string>
 		<key>Type</key>
 		<string>CheckBox</string>
+		<key>DefaultValue</key>
+		<true/>
 	</dict>
 </array>
 </plist>

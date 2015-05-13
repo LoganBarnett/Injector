@@ -7,12 +7,10 @@ var styleStorage = {
 
     setItem: function( key, data ) {
         localStorage.setItem( key, JSON.stringify( data ) );
-        return;
     },
 
     removeItem: function( key ) {
         localStorage.removeItem(key);
-        return;
     },
 
     each: function( fn ) {
@@ -20,7 +18,9 @@ var styleStorage = {
             var key = localStorage.key( i );
             if( key ) {
                 var data = styleStorage.getItem( key );
-                fn( key, data );
+                if( fn( key, data ) ) {
+                    break;
+                }
             }
         }
     }

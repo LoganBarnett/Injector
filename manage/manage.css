@@ -208,6 +208,8 @@ input[type="text"], textarea {
 }
 
 textarea {
+    width: 75%;
+    resize: vertical;
     padding: 5px;
 }
 
@@ -215,11 +217,7 @@ input[name="name"] {
     width: 35%;
 }
 
-textarea[name="domains"],
-textarea[name="excludes"] {
-    width: 75%;
-    min-width: 75%;
-    max-width: 75%;
+textarea[name="domains"], textarea[name="excludes"] {
     height: 50px;
 }
 
