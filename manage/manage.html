@@ -1,83 +1,83 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Injector</title>
-        <meta charset="utf-8">
-        <link rel="stylesheet" href="manage.css">
-        <script src="../share/storage.js"></script>
-        <script src="manage.js"></script>
-    </head>
-    <body>
-        <aside>
-            <ul id="list"></ul>
-            <div id="list-control">
-                <a id="new" href="#new">
-                    <svg viewBox="0 0 11 11">
-                        <path d="M0 5.5h11M5.5 0v11"/>
-                    </svg>
-                </a><a id="delete" href="#delete">
-                    <svg viewBox="0 0 11 11">
-                        <path d="M0 5.5h11"/>
-                    </svg>
-                </a>
-            </div>
-        </aside>
-        <section>
-            <h2 id="title">New Injection</h1>
-            <form id="form">
-                <p>
-                    <label for="enabled">Enabled</label>
-                    <input name="enabled" type="checkbox">
-                </p>
-                <p>
-                    <label for="name">Name</label>
-                    <input name="name" type="text" placeholder="Untitled">
-                </p>
-                <p>
-                    <label for="domains">URLs</label>
-                    <span class="label" id="label-includes">
-                        <svg viewBox="0 0 7 8"><path d="M0 0v7L6 3.5z"/></svg>
-                        Includes
-                    </span>
-                    <textarea name="domains" placeholder="*"></textarea>
-                    <span class="label" id="label-excludes">
-                        <svg viewBox="0 0 7 8"><path d="M0 0v7L6 3.5z"/></svg>
-                        Excludes
-                    </span>
-                    <textarea name="excludes"></textarea>
-                    <span class="description">
-                        One rule per line. Wildcard matches all.
-                        <strong>Example:</strong> http://*.apple.com/*
-                    </span>
-                </p>
-                <p>
-                    <label for="styles">Styles</label>
-                    <span class="label" id="label-css">
-                        <svg viewBox="0 0 7 8"><path d="M0 0v7L6 3.5z"/></svg>
-                        CSS
-                    </span>
-                    <textarea name="styles"></textarea>
-                    <span class="description">
-                        To override page style, put <strong>!important</strong>
-                        at the end of each style.
-                    </span>
-                </p>
-                <p>
-                    <label for="script">Script</label>
-                    <span class="label" id="label-js">
-                        <svg viewBox="0 0 7 8"><path d="M0 0v7L6 3.5z"/></svg>
-                        JavaScript
-                    </span>
-                    <textarea name="script"></textarea>
-                </p>
-                <p>
-                    <label for="onload">Run script on full load</label>
-                    <input name="onload" type="checkbox">
-                </p>
-                <p class="submit">
-                    <input name="save" type="submit" value="Save">
-                </p>
-            </form>
-        </section>
-    </body>
+	<head>
+		<title>Injector</title>
+		<meta charset="utf-8">
+		<link rel="stylesheet" href="manage.css">
+		<script src="../share/storage.js"></script>
+		<script src="manage.js"></script>
+	</head>
+	<body>
+		<aside>
+			<ul id="list"></ul>
+			<div id="list-control">
+				<a id="new" href="#new">
+					<svg viewBox="0 0 11 11">
+						<path d="M0 5.5h11M5.5 0v11"/>
+					</svg>
+				</a><a id="delete" href="#delete">
+					<svg viewBox="0 0 11 11">
+						<path d="M0 5.5h11"/>
+					</svg>
+				</a>
+			</div>
+		</aside>
+		<section>
+			<h2 id="title">New Injection</h1>
+			<form id="form">
+				<p>
+					<label for="enabled">Enabled</label>
+					<input name="enabled" type="checkbox">
+				</p>
+				<p>
+					<label for="name">Name</label>
+					<input name="name" type="text" placeholder="Untitled">
+				</p>
+				<p>
+					<label for="includes">URLs</label>
+					<span class="label" id="label-includes">
+						<svg viewBox="0 0 7 8"><path d="M0 0v7L6 3.5z"/></svg>
+						Includes
+					</span>
+					<textarea name="includes" placeholder="*"></textarea>
+					<span class="label" id="label-excludes">
+						<svg viewBox="0 0 7 8"><path d="M0 0v7L6 3.5z"/></svg>
+						Excludes
+					</span>
+					<textarea name="excludes"></textarea>
+					<span class="description">
+						One rule per line. Wildcard matches all.
+						<strong>Example:</strong> http://*.apple.com/*
+					</span>
+				</p>
+				<p>
+					<label for="styles">Styles</label>
+					<span class="label" id="label-css">
+						<svg viewBox="0 0 7 8"><path d="M0 0v7L6 3.5z"/></svg>
+						CSS
+					</span>
+					<textarea name="styles"></textarea>
+					<span class="description">
+						To override page style, put <strong>!important</strong>
+						at the end of each style.
+					</span>
+				</p>
+				<p>
+					<label for="script">Script</label>
+					<span class="label" id="label-js">
+						<svg viewBox="0 0 7 8"><path d="M0 0v7L6 3.5z"/></svg>
+						JavaScript
+					</span>
+					<textarea name="script"></textarea>
+				</p>
+				<p>
+					<label for="onload">Run script on full load</label>
+					<input name="onload" type="checkbox">
+				</p>
+				<p class="submit">
+					<input name="save" type="submit" value="Save">
+				</p>
+			</form>
+		</section>
+	</body>
 </html>
