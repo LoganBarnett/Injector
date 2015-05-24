@@ -1,49 +1,28 @@
 function reloadStyles() {
     safari.extension.removeContentStyleSheets();
     safari.extension.removeContentScripts();
-    styleStorage.each(function(key, data){
-        console.log(data);
-        if (data.enabled) {
+    
+    styleStorage.each( function( key, data ) {
+        if( data.enabled ) {
             var styles = data.styles,
                 script = data.script,
-                domains = sanitizeRules(data.domains),
-                excludes = sanitizeRules(data.excludes);
-            excludes.push(safari.extension.baseURI + '*');
-            styles.length && safari.extension.addContentStyleSheet(styles, domains, excludes);
-            script.length && safari.extension.addContentScript(script, domains, excludes, data.onload);
+                domains = data.domains,
+                excludes = data.excludes;
+            styles.length && safari.extension.addContentStyleSheet( styles, domains, excludes );
+            script.length && safari.extension.addContentScript( script, domains, excludes, data.onload );
         }
-    });
+    } );
 }
 
-function sanitizeRules(domains) {
-    /* Process domains */
-    var result = [];
-    for (var i = domains.length - 1; i >= 0; i--){
-        var domain = domains[i];
-        if (domain !== '') {
-            /* Make sure user input always has trailing slash.
-             * Workaround of Safari 5's URL parsing bug. */
-            if (domain.search(/https?:\/\/(.*)\//) == -1) {
-                if (domain.substr(-1) == '*')
-                    domain = domain.substr(0, domain.length-1) + '/*';
-                else
-                    domain = domain + '/';
-            }
-            result.push(domain);
-        }
-    }
-    return result;
-}
-
-function handleCommand(event) {
-    switch (event.command) {
+function handleCommand( event ) {
+    switch( event.command ) {
     case 'launch-injector':
         var manageURL = safari.extension.baseURI + 'manage/manage.html',
             currentWindow = safari.application.activeBrowserWindow,
             currentTab = currentWindow.activeTab,
             url = currentTab.url;
         
-        if (url === "") {
+        if( url === "" ) {
             currentTab.url = manageURL;
         }
         else {
@@ -62,7 +41,7 @@ function handleCommand(event) {
                 styleKey = "new," + encodeURIComponent( url );
             }
             
-            currentWindow.openTab('foreground').url = manageURL + "#" + styleKey;
+            currentWindow.openTab( 'foreground' ).url = manageURL + "#" + styleKey;
         }
         break;
     default:
@@ -70,31 +49,31 @@ function handleCommand(event) {
     }
 }
 
-function handleMessage(event) {
-    switch (event.name) {
+function handleMessage( event ) {
+    switch( event.name ) {
     case 'reloadStyles':
         reloadStyles();
         break;
     case 'getItem':
-        var item = styleStorage.getItem(event.message);
-        event.target.page.dispatchMessage('getItem', [event.message, item]);
+        var item = styleStorage.getItem( event.message );
+        event.target.page.dispatchMessage( 'getItem', [ event.message, item ] );
         break;
     case 'removeItem':
-        styleStorage.removeItem(event.message);
+        styleStorage.removeItem( event.message );
         break;
     case 'setItem':
-        styleStorage.setItem(event.message[0], event.message[1]);
+        styleStorage.setItem( event.message[0], event.message[1] );
         break;
     case 'items':
         var items = [];
-        styleStorage.each(function(key, data){
-            items.push({'key': key, 'data': data});
-        });
-        event.target.page.dispatchMessage('items', items);
+        styleStorage.each( function( key, data ) {
+            items.push( { 'key': key, 'data': data } );
+        } );
+        event.target.page.dispatchMessage( 'items', items );
         break;
     case 'shouldConvert':
-        if (localStorage.length === 0) {
-            event.target.page.dispatchMessage('shouldConvert', true);
+        if( localStorage.length === 0 ) {
+            event.target.page.dispatchMessage( 'shouldConvert', true );
             break;
         }
     default:
@@ -102,8 +81,8 @@ function handleMessage(event) {
     }
 }
 
-function handleValidate(event) {
-    switch (event.target.identifier) {
+function handleValidate( event ) {
+    switch( event.target.identifier ) {
     case 'LaunchInjector':
         event.target.disabled = !safari.extension.settings.enableContextMenu;
         break;
@@ -112,7 +91,7 @@ function handleValidate(event) {
     }
 }
 
-safari.application.addEventListener('command', handleCommand, false);
-safari.application.addEventListener('message', handleMessage, false);
-safari.application.addEventListener('validate', handleValidate, false);
+safari.application.addEventListener( 'command', handleCommand, false );
+safari.application.addEventListener( 'message', handleMessage, false );
+safari.application.addEventListener( 'validate', handleValidate, false );
 reloadStyles();

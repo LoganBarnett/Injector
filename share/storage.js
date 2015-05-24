@@ -1,8 +1,7 @@
 var styleStorage = {
-
     getItem: function( key ) {
-        var jsonString = localStorage.getItem(key);
-        return jsonString ? JSON.parse( jsonString ) : null;
+        var jsonString = localStorage.getItem( key );
+        return jsonString === null ? null : JSON.parse( jsonString );
     },
 
     setItem: function( key, data ) {
@@ -10,11 +9,13 @@ var styleStorage = {
     },
 
     removeItem: function( key ) {
-        localStorage.removeItem(key);
+        localStorage.removeItem( key );
     },
 
     each: function( fn ) {
-        for (var i = localStorage.length - 1; i >= 0; i--){
+        var length = localStorage.length,
+            i;
+        for( i = 0; i < length; i++ ){
             var key = localStorage.key( i );
             if( key ) {
                 var data = styleStorage.getItem( key );

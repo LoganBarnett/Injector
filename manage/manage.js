@@ -1,20 +1,8 @@
-if( window.safari === undefined ) {
-    window.safari = {
-        self: {
-            addEventListener: function() {},
-            tab: {
-                dispatchMessage: function( name, message ) {
-                    console.log( name + ": " + message );
-                }
-            }
-        }
-    }
-}
-
 var Manager = {
     list: null,
     form: null,
     newLink: null,
+    deleteLink: null,
     includeLabel: null,
     excludeLabel: null,
     cssLabel: null,
@@ -59,6 +47,7 @@ var Manager = {
         Manager.list = document.getElementById( 'list' );
         Manager.form = document.getElementById( 'form' );
         Manager.newLink = document.getElementById( 'new' );
+        Manager.deleteLink = document.getElementById( 'delete' );
         Manager.includeLabel = document.getElementById( 'label-includes' );
         Manager.excludeLabel = document.getElementById( 'label-excludes' );
         Manager.cssLabel = document.getElementById( 'label-css' );
@@ -66,12 +55,29 @@ var Manager = {
         
         Manager.createItems();
 
-        /* Events for the "New User CSS" sidebar link. */
         Manager.newLink.addEventListener( 'click', function( event ) {
             if( this !== Manager.current ) {
                 Manager.markCurrent( this );
                 Manager.bindNewForm();
             }
+        }, false );
+        
+        Manager.deleteLink.addEventListener( 'click', function( event ) {
+            if( Manager.current === null || Manager.current === Manager.newLink ) {
+                return;
+            }
+            
+            var element = Manager.current;
+            
+            (
+                element.nextElementSibling ||
+                element.previousElementSibling ||
+                Manager.newLink
+            ).click();
+            
+            Manager.removeItem( element.hash.substr( 1 ) );
+            Manager.list.removeChild( element );
+            Manager.reloadStyles();
         }, false );
 
         Manager.includeLabel.addEventListener( 'click', Manager.clickLabel, false );
@@ -103,12 +109,13 @@ var Manager = {
     },
 
     createItem: function( key, data ) {
-        var item = document.createElement( 'a' ),
-            delete_link = document.createElement( 'span' );
+        var item = document.createElement( 'a' );
         
         item.id = Manager.getItemId( key );
         
-        item.className = 'selector' + ( data.enabled ? '' : ' disabled' );
+        if( !data.enabled ) {
+            item.className = 'disabled';
+        }
         item.href = '#' + key;
         item.textContent = data.name;
         item.addEventListener( 'click', function( e ) {
@@ -119,26 +126,6 @@ var Manager = {
             }
         } );
         
-        delete_link.className = 'delete';
-        delete_link.addEventListener( 'click', function( e ) {
-            var element = this.parentNode,
-                key = element.hash.substr( 1 );
-            
-            if( element === Manager.current ) {
-                (
-                    element.nextElementSibling ||
-                    element.previousElementSibling ||
-                    Manager.newLink
-                ).click();
-            }
-            
-            Manager.list.removeChild( element );
-            Manager.removeItem( key );
-            Manager.reloadStyles();
-            e.stopPropagation();
-        } );
-        
-        item.appendChild( delete_link );
         Manager.list.appendChild( item );
         return item;
     },
@@ -152,22 +139,19 @@ var Manager = {
     },
 
     constructDataFromForm: function( data ) {
-        var includes = Manager.form.domains.value,
+        var domains = Manager.form.domains.value,
             excludes = Manager.form.excludes.value;
         data.name = Manager.form.name.value;
         data.enabled = Manager.form.enabled.checked;
-        data.domains = includes.length ? includes.split( '\n' ) : [];
-        data.excludes = excludes.length ? excludes.split( '\n' ) : [];
+        data.domains = domains.length ? sanitizeRules( domains.split( '\n' ) ) : [];
+        data.excludes = excludes.length ? sanitizeRules( excludes.split( '\n' ) ) : [];
         data.styles = Manager.form.styles.value;
         data.script = Manager.form.script.value;
         data.onload = Manager.form.onload.checked;
         return data;
     },
-
-    bindForm: function( data, callback ) {
-        if( data.domains === undefined )  data.domains = [];
-        if( data.excludes === undefined ) data.excludes = [];
-
+    
+    populateForm: function( data ) {
         Manager.form.name.value = data.name || '';
         Manager.form.domains.value = data.domains.join( '\n' );
         Manager.form.excludes.value = data.excludes.join( '\n' );
@@ -175,11 +159,21 @@ var Manager = {
         Manager.form.script.value = data.script || '';
         Manager.form.onload.checked = data.onload;
         Manager.form.enabled.checked = data.enabled;
+    },
+
+    bindForm: function( data, callback ) {
+
+        Manager.populateForm( data );
 
         Manager.form._submitCallback && Manager.form.removeEventListener( 'submit', Manager.form._submitCallback, false ); // Cleanup
         
         Manager.form._submitCallback = function( e ) {
-            callback( Manager.constructDataFromForm( data ) );
+            var formData = Manager.constructDataFromForm( data );
+            
+            if( formData.name && ( formData.styles || formData.script ) && formData.domains ) {
+                Manager.populateForm( formData );
+                callback( formData );
+            }
             
             // Don't refresh the page
             e.preventDefault();
@@ -193,23 +187,21 @@ var Manager = {
         Manager.setTitle( data.name );
         Manager.setLabelState( data.domains.length, data.excludes.length, data.styles.length, data.script.length );
         Manager.bindForm( data, function( formData ) {
-            if( formData.name && ( formData.styles || formData.script ) && formData.domains ) {
-                Manager.setItem( key, formData );
+            Manager.setItem( key, formData );
             
-                var item = Manager.getListItem( key );
-                // Always update display
-                Manager.setTitle( formData.name );
-                item.childNodes[0].nodeValue = formData.name;
-                
-                if( formData.enabled ) {
-                    item.classList.remove( 'disabled' );
-                }
-                else {
-                    item.classList.add( 'disabled' );
-                }
-                
-                Manager.reloadStyles();
+            var item = Manager.getListItem( key );
+            // Always update display
+            Manager.setTitle( formData.name );
+            item.childNodes[0].nodeValue = formData.name;
+            
+            if( formData.enabled ) {
+                item.classList.remove( 'disabled' );
             }
+            else {
+                item.classList.add( 'disabled' );
+            }
+            
+            Manager.reloadStyles();
         });
     },
 
@@ -218,22 +210,44 @@ var Manager = {
         Manager.setLabelState( true, false, true, true );
         Manager.bindForm( { enabled: true, domains: [], excludes: [] }, function( formData ) {
             var key = Date.now();
-            if( formData.name && ( formData.styles || formData.script ) && formData.domains ) {
-                Manager.setItem( key, formData );
-
-                var item = Manager.createItem( key, formData );
-                item.click();
-                
-                if( !formData.enabled ) {
-                    item.classList.add('disabled');
-                }
-                
-                Manager.reloadStyles();
+            Manager.setItem( key, formData );
+            
+            var item = Manager.createItem( key, formData );
+            item.click();
+            
+            if( !formData.enabled ) {
+                item.classList.add('disabled');
             }
+            
+            Manager.reloadStyles();
         });
     }
 
 };
+
+function sanitizeRules( domains ) {
+    /* Process domains */
+    var result = [],
+        i,
+        domain;
+    for( i = 0; i < domains.length; i++ ){
+        domain = domains[i];
+        if( domain !== '' ) {
+            /* Make sure user input always has trailing slash.
+             * Workaround of Safari 5's URL parsing bug. */
+            if( domain.search(/\w+:\/\/(.*)\//) === -1 ) {
+                if( domain[ domain.length - 1 ] === '*' ) {
+                    domain = domain.substr( 0, domain.length - 1 ) + '/*';
+                }
+                else {
+                    domain = domain + '/';
+                }
+            }
+            result.push(domain);
+        }
+    }
+    return result;
+}
 
 function handleMessage( event ) {
     switch( event.name ) {

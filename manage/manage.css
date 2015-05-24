@@ -1,140 +1,133 @@
 /* Defaults
  * ----------------------------------------------------------------------- */
 
+html {
+    height: 100%;
+}
+
 body {
+    display: -webkit-flex;
     margin: 0;
-    background-color: #f0f0f0;
-    font-family: "Lucida Grande", sans-serif;
-    font-size: 14px/100%;
+    padding: 8px;
+    height: 100%;
+    background-color: #ededed;
+    font-family: "Helvetica Neue", sans-serif;
+    font-size: 13px;
+    line-height: 1em;
+    letter-spacing: .015625em;
     -webkit-user-select: none;
 }
 
-header {
-    display: none;
+* {
+    -webkit-box-sizing: border-box;
 }
 
 /* Layout
  * ----------------------------------------------------------------------- */
 
-#container {
-    position: absolute;
-    overflow: hidden;
-    margin: 8px;
-    top: 0; right: 0; bottom: 0; left: 0;
-    display: -webkit-box;
-    -webkit-box-orient: horizontal;
-}
-
-#container > aside,
-#container > section {
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    position: absolute;
-    top: 0; bottom: 0;
+aside, section {
+    display: -webkit-flex;
+    -webkit-flex-direction: column;
     background-color: #fff;
 }
 
-#container > aside {
-    width: 199px;
-    border: 1px solid #bebebe;
-    border-top-color: #8e8e8e;
+aside {
+    -webkit-flex: none;
+    width: 200px;
+    border: 1px solid #c5c5c5;
 }
 
-#container > section {
-    display: block;
-    -webkit-box-flex: 1;
-    left: 201px; right: 0;
-    margin: 0 0 0 8px; padding: 0;
-    border: 1px solid #bebebe;
-    border-top-color: #8e8e8e;
-    overflow: auto;
+section {
+    -webkit-flex: 1;
+    margin: 0 0 0 8px;  padding: 0;
+    border: 1px solid #c5c5c5;
 }
 
 /* Sidebar
  * ----------------------------------------------------------------------- */
 
-#list-container {
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-box-flex: 1;
-    overflow-y: auto;
-    overflow-x: hidden;
-}
-
 #list {
-    -webkit-box-flex: 1;
     margin: 0; padding: 0;
     list-style: none;
-    -webkit-background-size: auto 70px;
-    background-image: linear-gradient(0deg, #f7f7f7, #f7f7f7 50%, #fff 50%);
+    background-size: 100% 72px;
+    background-image: linear-gradient(180deg, #fff, #fff 50%, #f5f5f5 50%);
+    -webkit-flex: 1;
+    overflow-y: auto;
 }
 
 #list > a {
     display: block;
-    position: relative;
+    background-color: #fff;
     margin: 0;
-}
-
-.selector {
-    display: block;
-    padding: 10px;
+    padding: 0 11px;
+    height: 36px;
+    line-height: 36px;
     text-decoration: none;
-    font-size: 12px;
     color: #000;
 }
 
-.selector.disabled {
+#list > a:nth-child(2n) {
+    background-color: #f5f5f5;
+}
+
+#list > a.disabled {
     color: #888;
 }
 
-.selector.current {
+#list > a.current {
     color: #fff;
-    font-weight: bold;
-    text-shadow: 0 1px 0 #333;
-    background-image: linear-gradient(0deg, #1654ab, #5b92d5);
+    background-color: #006bd2;
 }
 
-.delete {
-    display: block;
-    position: absolute;
-    visibility: hidden;
-    top: 50%; right: 8px; bottom: auto; left: auto;
-    margin: 0; margin-top: -7px;
-    width: 14px;
-    height: 14px;
-    background-image: url(resource/ExtensionClose.png);
-    background-repeat: no-repeat;
+#list-control {
+    -webkit-flex: none;
+    height: 20px;
+    background-image: linear-gradient(0deg, #f5f5f5, #fafafa);
+    border-top: 1px solid #c5c5c5;
 }
 
-#list > a:hover > .delete {
-    visibility: visible;
-}
-
-.delete:hover {
-    background-image: url(resource/ExtensionCloseHovered.png);
-}
-
-#new {
-    display: block;
-    background-color: #fff;
-    border-top: 1px solid #bebebe;
+#list-control > a {
+    display: inline-block;
+    width: 24px;
+    height: 19px;
+    padding: 4px 6px;
+    border-right: 1px solid #c5c5c5;
     outline: none;
+}
+
+#list-control > a:active {
+    background-color: rgba(0,0,0,.125);
+}
+
+#list-control svg {
+    width: 11px;
+    height: 11px;
+}
+
+#list-control path {
+    stroke: #000;
+    stroke-width: 1;
+    fill: none;
 }
 
 /* Content area
  * ----------------------------------------------------------------------- */
 
 h2 {
-    margin: 0 0 10px;
-    padding: 9px 15px;
-    border-bottom: 1px solid #d6d6d6;
+    -webkit-flex: none;
+    margin: 0;
+    padding: 11px 15px;
+    border-bottom: 1px solid #c5c5c5;
     text-shadow: 0 1px 0 #fff;
-    font-size: 16px;
+    font-size: 18px;
+    font-weight: normal;
     color: #404040;
 }
 
 #form {
-    -webkit-box-flex: 2;
+    -webkit-flex: 1;
+    padding-top: 10px;
+    overflow-y: auto;
 }
 
 fieldset {
@@ -154,27 +147,38 @@ label {
     padding: 0;
     width: 19%; /* So we have a little nice spacing */
     text-align: right;
-    font-size: 13px;
     color: #666;
 }
 
 .label {
     display: block;
-    padding: 3px 5px;
-    /* This feels a bit out of place. But works for the time being. */
-    background-image: linear-gradient(0deg, #ddd, #eee);
-    border: 1px solid #999;
-    border-bottom-width: 0;
+    padding: 0 5px;
+    height: 21px;
+    background-color: #e5e5e5;
+    border: 1px solid #a5a5a5;
     width: 75%;
-    font-size: 11px;
-    font-weight: bold;
-    text-shadow: 0 1px 0 #fff;
-    color: #777;
+    font-size: 13px;
+    line-height: 19px;
+    color: #555;
     cursor: pointer;
 }
 
+.label > svg {
+    width: 7px;
+    height: 8px;
+}
+
+.label path {
+    fill: #555;
+    -webkit-transform: rotate3d(0,0,1,90deg);
+    -webkit-transform-origin: 3px 4px 0px;
+}
+
+.label.hidden path {
+    -webkit-transform: rotate3d(1,0,0,0deg);
+}
+
 .label.hidden {
-    border-bottom: 1px solid #999 !important;
     margin-bottom: 4px;
 }
 
@@ -198,19 +202,21 @@ label {
     display: block;
     font-size: 11px;
     line-height: 11px;
-    padding: 2px 0 0 0;
+    margin-top: 2px;
     color: #aaa;
 }
 
 input[type="text"], textarea {
-    font-size: 13px;
-    max-width: 90%;
+    font-size: inherit;
 }
 
 textarea {
     width: 75%;
     resize: vertical;
     padding: 5px;
+    border-color: #a5a5a5;
+    font-family: monospace;
+    border-top-width: 0;
 }
 
 input[name="name"] {
@@ -222,7 +228,5 @@ textarea[name="domains"], textarea[name="excludes"] {
 }
 
 textarea[name="styles"], textarea[name="script"] {
-    font-family: monospace;
-    width: 75%;
     height: 200px;
 }
