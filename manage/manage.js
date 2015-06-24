@@ -2,16 +2,16 @@ var Manager = {
 	list: null,
 	form: null,
 	newLink: null,
-	deleteLink: null,
+
 	includeLabel: null,
 	excludeLabel: null,
 	cssLabel: null,
 	jsLabel: null,
-	
+
 	current: null,
-	
+
 	hideLabel: function( label ) {
-	   label.classList.add( "hidden" );
+		label.classList.add( "hidden" );
 	},
 	showLabel: function( label ) {
 		label.classList.remove( "hidden" );
@@ -47,12 +47,13 @@ var Manager = {
 		Manager.list = document.getElementById( "list" );
 		Manager.form = document.getElementById( "form" );
 		Manager.newLink = document.getElementById( "new" );
-		Manager.deleteLink = document.getElementById( "delete" );
 		Manager.includeLabel = document.getElementById( "label-includes" );
 		Manager.excludeLabel = document.getElementById( "label-excludes" );
 		Manager.cssLabel = document.getElementById( "label-css" );
 		Manager.jsLabel = document.getElementById( "label-js" );
-		
+
+		var deleteLink = document.getElementById( "delete" );
+
 		Manager.createItems();
 
 		Manager.newLink.addEventListener( "click", function( event ) {
@@ -61,20 +62,20 @@ var Manager = {
 				Manager.bindNewForm();
 			}
 		}, false );
-		
-		Manager.deleteLink.addEventListener( "click", function( event ) {
+
+		deleteLink.addEventListener( "click", function( event ) {
 			if( Manager.current === null || Manager.current === Manager.newLink ) {
 				return;
 			}
-			
+
 			var element = Manager.current;
-			
+
 			(
 				element.nextElementSibling ||
 				element.previousElementSibling ||
 				Manager.newLink
 			).click();
-			
+
 			Manager.removeItem( element.hash.substr( 1 ) );
 			Manager.list.removeChild( element );
 			Manager.reloadStyles();
@@ -84,6 +85,8 @@ var Manager = {
 		Manager.excludeLabel.addEventListener( "click", Manager.clickLabel, false );
 		Manager.cssLabel.addEventListener( "click", Manager.clickLabel, false );
 		Manager.jsLabel.addEventListener( "click", Manager.clickLabel, false );
+
+		deleteLink = undefined;
 	},
 
 	getItemId: function( key ) {
@@ -93,11 +96,11 @@ var Manager = {
 		return document.getElementById( Manager.getItemId( key ) );
 	},
 
-	reloadStyles: function(){
+	reloadStyles: function() {
 		safari.self.tab.dispatchMessage("reloadStyles");
 	},
 
-	setTitle: function(title){
+	setTitle: function( title ) {
 		document.getElementById("title").textContent = title;
 	},
 
@@ -110,9 +113,9 @@ var Manager = {
 
 	createItem: function( key, data ) {
 		var item = document.createElement( "a" );
-		
+
 		item.id = Manager.getItemId( key );
-		
+
 		if( !data.enabled ) {
 			item.className = "disabled";
 		}
@@ -125,7 +128,7 @@ var Manager = {
 				Manager.getItem( key );
 			}
 		} );
-		
+
 		Manager.list.appendChild( item );
 		return item;
 	},
@@ -150,7 +153,7 @@ var Manager = {
 		data.onload = Manager.form.onload.checked;
 		return data;
 	},
-	
+
 	populateForm: function( data ) {
 		Manager.form.name.value = data.name || "";
 		Manager.form.includes.value = data.includes.join( "\n" );
@@ -166,41 +169,41 @@ var Manager = {
 		Manager.populateForm( data );
 
 		Manager.form._submitCallback && Manager.form.removeEventListener( "submit", Manager.form._submitCallback, false ); // Cleanup
-		
+
 		Manager.form._submitCallback = function( e ) {
 			var formData = Manager.constructDataFromForm( data );
-			
+
 			if( formData.name && ( formData.styles || formData.script ) && formData.includes ) {
 				Manager.populateForm( formData );
 				callback( formData );
 			}
-			
+
 			// Don't refresh the page
 			e.preventDefault();
 			return false;
 		};
-		
+
 		Manager.form.addEventListener( "submit", Manager.form._submitCallback, false );
 	},
 
-	bindEditForm: function(key, data){
+	bindEditForm: function( key, data ) {
 		Manager.setTitle( data.name );
 		Manager.setLabelState( data.includes.length, data.excludes.length, data.styles.length, data.script.length );
 		Manager.bindForm( data, function( formData ) {
 			Manager.setItem( key, formData );
-			
+
 			var item = Manager.getListItem( key );
 			// Always update display
 			Manager.setTitle( formData.name );
 			item.childNodes[0].nodeValue = formData.name;
-			
+
 			if( formData.enabled ) {
 				item.classList.remove( "disabled" );
 			}
 			else {
 				item.classList.add( "disabled" );
 			}
-			
+
 			Manager.reloadStyles();
 		});
 	},
@@ -211,14 +214,14 @@ var Manager = {
 		Manager.bindForm( { enabled: true, includes: [], excludes: [] }, function( formData ) {
 			var key = Date.now();
 			Manager.setItem( key, formData );
-			
+
 			var item = Manager.createItem( key, formData );
 			item.click();
-			
+
 			if( !formData.enabled ) {
 				item.classList.add("disabled");
 			}
-			
+
 			Manager.reloadStyles();
 		});
 	}
@@ -231,9 +234,9 @@ function handleMessage( event ) {
 		event.message.forEach( function( item ) {
 			Manager.createItem( item.key, item.data );
 		} );
-		
+
 		var hash = window.location.hash;
-		
+
 		if( hash.indexOf( "new", 1 ) === 1 ) {
 			Manager.newLink.click();
 			if( hash.length > 4 ) {

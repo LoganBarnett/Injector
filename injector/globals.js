@@ -1,15 +1,14 @@
+const managerURL = safari.extension.baseURI + "manage/manage.html";
+const contextMenuDisabled = !safari.extension.settings.enableContextMenu;
+
 function reloadStyles() {
 	safari.extension.removeContentStyleSheets();
 	safari.extension.removeContentScripts();
-	
+
 	styleStorage.each( function( key, data ) {
 		if( data.enabled ) {
-			var styles = data.styles,
-				script = data.script,
-				includes = data.includes,
-				excludes = data.excludes;
-			styles.length && safari.extension.addContentStyleSheet( styles, includes, excludes );
-			script.length && safari.extension.addContentScript( script, includes, excludes, data.onload );
+			data.styles.length && safari.extension.addContentStyleSheet( data.styles, data.includes, data.excludes );
+			data.script.length && safari.extension.addContentScript( data.script, data.includes, data.excludes, data.onload );
 		}
 	} );
 }
@@ -17,17 +16,15 @@ function reloadStyles() {
 function handleCommand( event ) {
 	switch( event.command ) {
 	case "launch-injector":
-		var manageURL = safari.extension.baseURI + "manage/manage.html",
-			currentWindow = safari.application.activeBrowserWindow,
+		var currentWindow = safari.application.activeBrowserWindow,
 			currentTab = currentWindow.activeTab,
 			url = currentTab.url;
-		
+
 		if( url === "" ) {
-			currentTab.url = manageURL;
+			currentTab.url = managerURL;
 		}
 		else {
-			var includes,
-				styleKey = "";
+			var styleKey = "";
 			styleStorage.each( function( key, data ) {				
 				for( var i = 0; i < data.includes.length; i++ ) {
 					if( new RegExp( data.includes[i] ).test( url ) ) {
@@ -36,12 +33,12 @@ function handleCommand( event ) {
 					}
 				}
 			} );
-			
+
 			if( styleKey === "" ) {
 				styleKey = "new," + encodeURIComponent( url );
 			}
-			
-			currentWindow.openTab( "foreground" ).url = manageURL + "#" + styleKey;
+
+			currentWindow.openTab( "foreground" ).url = managerURL + "#" + styleKey;
 		}
 		break;
 	default:
@@ -71,11 +68,6 @@ function handleMessage( event ) {
 		} );
 		event.target.page.dispatchMessage( "items", items );
 		break;
-	case "shouldConvert":
-		if( localStorage.length === 0 ) {
-			event.target.page.dispatchMessage( "shouldConvert", true );
-			break;
-		}
 	default:
 		break;
 	}
@@ -84,7 +76,7 @@ function handleMessage( event ) {
 function handleValidate( event ) {
 	switch( event.target.identifier ) {
 	case "LaunchInjector":
-		event.target.disabled = !safari.extension.settings.enableContextMenu;
+		event.target.disabled = contextMenuDisabled;
 		break;
 	default:
 		break;
@@ -94,5 +86,5 @@ function handleValidate( event ) {
 safari.application.addEventListener( "command", handleCommand, false );
 safari.application.addEventListener( "message", handleMessage, false );
 safari.application.addEventListener( "validate", handleValidate, false );
-reloadStyles();
 styleStorage.update();
+reloadStyles();

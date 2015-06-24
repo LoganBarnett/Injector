@@ -5,7 +5,7 @@
 	<key>Author</key>
 	<string>Trevor Behlman</string>
 	<key>Builder Version</key>
-	<string>10600.4.10.7</string>
+	<string>10600.6.3</string>
 	<key>CFBundleDisplayName</key>
 	<string>Injector</string>
 	<key>CFBundleIdentifier</key>
@@ -13,9 +13,9 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.5</string>
+	<string>1.6</string>
 	<key>CFBundleVersion</key>
-	<string>1.5</string>
+	<string>1.6</string>
 	<key>Chrome</key>
 	<dict>
 		<key>Context Menu Items</key>
@@ -37,7 +37,7 @@
 				<key>Identifier</key>
 				<string>launch-injector</string>
 				<key>Image</key>
-				<string>share/toolbar.png</string>
+				<string>toolbar.png</string>
 				<key>Label</key>
 				<string>Injector</string>
 			</dict>
