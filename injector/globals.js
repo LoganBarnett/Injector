@@ -20,7 +20,10 @@ function handleCommand( event ) {
 			currentTab = currentWindow.activeTab,
 			url = currentTab.url;
 
-		if( url === "" ) {
+		if( url === undefined ) {
+			currentWindow.openTab( "foreground" ).url = managerURL + "#new";
+		}
+		else if( url === "" ) {
 			currentTab.url = managerURL;
 		}
 		else {
