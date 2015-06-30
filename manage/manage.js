@@ -1,6 +1,7 @@
 var Manager = {
 	list: null,
 	form: null,
+	title: null,
 	newLink: null,
 
 	includeLabel: null,
@@ -46,6 +47,7 @@ var Manager = {
 	start: function() {
 		Manager.list = document.getElementById( "list" );
 		Manager.form = document.getElementById( "form" );
+		Manager.title = document.getElementById( "title" );
 		Manager.newLink = document.getElementById( "new" );
 		Manager.includeLabel = document.getElementById( "label-includes" );
 		Manager.excludeLabel = document.getElementById( "label-excludes" );
@@ -101,7 +103,7 @@ var Manager = {
 	},
 
 	setTitle: function( title ) {
-		document.getElementById("title").textContent = title;
+		Manager.title.textContent = title;
 	},
 
 	setLabelState: function( includes, excludes, styles, script ) {
