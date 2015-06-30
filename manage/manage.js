@@ -141,13 +141,14 @@ var Manager = {
 		}
 	},
 
-	constructDataFromForm: function( data ) {
+	constructDataFromForm: function() {
 		var includes = Manager.form.includes.value,
-			excludes = Manager.form.excludes.value;
+			excludes = Manager.form.excludes.value,
+			data = {};
 		data.name = Manager.form.name.value;
 		data.enabled = Manager.form.enabled.checked;
-		data.includes = includes.length ? sanitizeRules( includes.split( "\n" ) ) : [];
-		data.excludes = excludes.length ? sanitizeRules( excludes.split( "\n" ) ) : [];
+		data.includes = includes.length ? sanitizeDomains( includes.split( "\n" ) ) : [];
+		data.excludes = excludes.length ? sanitizeDomains( excludes.split( "\n" ) ) : [];
 		data.styles = Manager.form.styles.value;
 		data.script = Manager.form.script.value;
 		data.onload = Manager.form.onload.checked;
@@ -171,7 +172,7 @@ var Manager = {
 		Manager.form._submitCallback && Manager.form.removeEventListener( "submit", Manager.form._submitCallback, false ); // Cleanup
 
 		Manager.form._submitCallback = function( e ) {
-			var formData = Manager.constructDataFromForm( data );
+			var formData = Manager.constructDataFromForm();
 
 			if( formData.name && ( formData.styles || formData.script ) && formData.includes ) {
 				Manager.populateForm( formData );

@@ -38,10 +38,16 @@ var styleStorage = {
 				return;
 			case null:
 				styleStorage.each( function( key, data ) {
-					data.includes = sanitizeRules( data.domains );
-					data.excludes = sanitizeRules( data.excludes );
+					data.includes = sanitizeDomains( data.domains );
+					data.excludes = sanitizeDomains( data.excludes );
 					delete data.domains;
 					styleStorage.setItem( key, data );
+				} );
+				break;
+			case "1.7":
+				styleStorage.each( function( key, data ) {
+					data.includes = sanitizeDomains( data.domains );
+					data.excludes = sanitizeDomains( data.excludes );
 				} );
 				break;
 		}
@@ -50,26 +56,49 @@ var styleStorage = {
 	}
 };
 
-function sanitizeRules( domains ) {
-	/* Process domains */
+/**
+ * Adjusts domains so that they are valid according to the Safari extension
+ * API for style/script injection.
+ */
+function sanitizeDomains( domains ) {
 	var result = [],
 		i,
-		domain;
-	for( i = 0; i < domains.length; i++ ){
-		domain = domains[i];
-		if( domain !== "" ) {
-			/* Make sure user input always has trailing slash.
-			 * Workaround of Safari 5's URL parsing bug. */
-			if( domain.search(/\w+:\/\/(.*)\//) === -1 ) {
-				if( domain[ domain.length - 1 ] === "*" ) {
-					domain = domain.substr( 0, domain.length - 1 ) + "/*";
-				}
-				else {
-					domain = domain + "/";
-				}
-			}
-			result.push(domain);
+		url;
+	
+	for( i = 0; i < domains.length; i++ ) {
+
+		/* Breakdown of the capturing groups in the below regular expression:
+		 1 - protocol + ://
+		 2 - subdomain(s) or www. + domain + extension(s)
+		 3 - path on domain
+		 */
+		url = /^([\w\*]+:\/\/)?([\d\w\-\.:\*]+)([^\s]*)$/.exec( domains[i] );
+		
+		// No match: assume invalid url and skip
+		if( url === null ) {
+			return "";
 		}
+		
+		if( !url[1] ) {
+			url[1] = "http://";
+		}
+		
+		/* If the full domain includes exactly one dot, it must have an extension and
+		   no subdomain, which means we need to prepend with www. */
+		if( ( url[2].match( /\./g ) || [] ).length === 1 ) {
+			url[2] = "www." + url[2];
+		}
+		
+		// Domains need a trailing slash
+		if( url[3].length === 0 ) {
+			url[3] = "/";
+		}
+		else if( url[3][0] !== "/" ) {
+			url[3] = "/" + url[3];
+		}
+
+		result.push( url[1] + url[2] + url[3] );
 	}
+	
 	return result;
 }
