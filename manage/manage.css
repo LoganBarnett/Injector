@@ -54,10 +54,11 @@ section {
 #list > a {
 	display: block;
 	background-color: #fff;
-	margin: 0;
-	padding: 0 11px;
-	height: 36px;
+	padding: 0 12px;
 	line-height: 36px;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow:hidden;
 	text-decoration: none;
 	color: #000;
 }
@@ -211,4 +212,8 @@ textarea[name="styles"], textarea[name="script"] {
 	line-height: 1.25em;
 	margin-top: 3px;
 	color: #aaa;
+}
+
+.fragment {
+	display: inline-block;
 }
