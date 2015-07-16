@@ -14,42 +14,78 @@ function reloadStyles() {
 }
 
 function handleCommand( event ) {
-	switch( event.command ) {
-	case "launch-injector":
-		var currentWindow = safari.application.activeBrowserWindow,
-			currentTab = currentWindow.activeTab,
-			url = currentTab.url;
-
-		if( url === undefined ) {
-			currentWindow.openTab( "foreground" ).url = managerURL + "#new";
-		}
-		else if( url === "" ) {
-			currentTab.url = managerURL;
-		}
-		else {
-			var styleKey = "";
-			styleStorage.each( function( key, data ) {				
-				for( var i = 0; i < data.includes.length; i++ ) {
-					if( new RegExp( data.includes[i] ).test( url ) ) {
-						styleKey = key;
-						return true; // break all
-					}
+	if( safari.extension.popovers[0].visible ) {
+		return;
+	}
+	
+	var currentTab = safari.application.activeBrowserWindow.activeTab,
+		url = currentTab.url;
+	
+	if( url === undefined ) {
+		launchManager( "new" );
+	}
+	else if( url === "" ) {
+		currentTab.url = managerURL;
+	}
+	else {
+		var injections = [],
+			i;
+		
+		styleStorage.each( function( key, data ) {				
+			for( i = 0; i < data.includes.length; i++ ) {
+				if( new RegExp( data.includes[i] ).test( url ) ) {
+					injections.push( { key: key, data: data } );
 				}
-			} );
-
-			if( styleKey === "" ) {
-				styleKey = "new," + encodeURIComponent( url );
 			}
-
-			currentWindow.openTab( "foreground" ).url = managerURL + "#" + styleKey;
+		} );
+	
+		switch( event.command ) {
+		case "toolbar-item":
+			if( injections.length ) {
+				event.target.popover.contentWindow.createItems( injections );
+				event.target.showPopover();
+				break;
+			}
+		case "launch-injector":
+			var hash;
+			
+			if( injections.length ) {
+				hash = injections[0].key;
+			}
+			else {
+				hash = "new," + encodeURIComponent( url );
+			}
+			
+			launchManager( hash );
+			break;
+		default:
+			break;
 		}
-		break;
-	default:
-		break;
 	}
 }
 
+function launchManager( hash ) {
+	safari.application.activeBrowserWindow.openTab().url = managerURL + "#" + hash;
+}
+
+// BEGIN DEPRECATION
+
+function getItem( key ) {
+	return styleStorage.getItem( key );
+}
+
+function setItem( key, data ) {
+	return styleStorage.setItem( key );
+}
+
+function setItemEnabled( key, enabled ) {
+	var item = styleStorage.getItem( key );
+	item.enabled = enabled;
+	styleStorage.setItem( key, item );
+}
+
 function handleMessage( event ) {
+	console.log(event.name);
 	switch( event.name ) {
 	case "reloadStyles":
 		reloadStyles();
@@ -67,7 +103,7 @@ function handleMessage( event ) {
 	case "items":
 		var items = [];
 		styleStorage.each( function( key, data ) {
-			items.push( { "key": key, "data": data } );
+			items.push( { key: key, data: data } );
 		} );
 		event.target.page.dispatchMessage( "items", items );
 		break;
@@ -75,6 +111,8 @@ function handleMessage( event ) {
 		break;
 	}
 }
+
+// END DEPRECATION
 
 function handleValidate( event ) {
 	switch( event.target.identifier ) {
@@ -87,7 +125,7 @@ function handleValidate( event ) {
 }
 
 safari.application.addEventListener( "command", handleCommand, false );
-safari.application.addEventListener( "message", handleMessage, false );
+safari.application.addEventListener( "message", handleMessage, false ); // DEPRECATED
 safari.application.addEventListener( "validate", handleValidate, false );
 styleStorage.update();
 reloadStyles();

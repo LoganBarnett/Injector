@@ -1,0 +1,29 @@
+/* * * * * * * *\
+ * Top levels
+\* * * * * * * */
+
+body {
+	-webkit-flex-direction: column;
+}
+
+/* * * * * * *\
+ * List
+\* * * * * * */
+
+#list-container {
+	-webkit-flex: 1;
+	overflow-y: auto;
+}
+
+#list > a > input {
+	display: inline-block;
+	margin: 12px 6px 12px 0;
+}
+
+#list-control circle {
+	fill: #000;
+}
+
+#list-control .disabled circle {
+	fill: #c5c5c5;
+}

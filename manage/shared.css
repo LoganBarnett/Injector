@@ -1,0 +1,86 @@
+* {
+	-webkit-box-sizing: border-box;
+}
+
+/* * * * * * * *\
+ * Top levels
+\* * * * * * * */
+
+html {
+	height: 100%;
+	-webkit-user-select: none;
+}
+
+body {
+	height: 100%;
+	display: -webkit-flex;
+	margin: 0;
+	font-family: "Helvetica Neue";
+	font-size: 13px;
+	line-height: 1em;
+	letter-spacing: .015625em;
+}
+
+/* * * * * * *\
+ * List
+\* * * * * * */
+
+#list {
+	background-size: 100% 72px;
+	background-image: linear-gradient(180deg, transparent, transparent 50%, rgba(0,0,0,.03125) 50%);
+}
+
+#list > a {
+	display: block;
+	padding: 0 12px;
+	line-height: 36px;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow:hidden;
+	text-decoration: none;
+	color: #000;
+}
+
+#list > a.disabled {
+	color: #888;
+}
+
+#list > a.selection {
+	color: #fff;
+	background-color: #006bd2;
+}
+
+#list-control {
+	-webkit-flex: none;
+	height: 20px;
+	background-image: linear-gradient(0deg, #f5f5f5, #fafafa);
+	border-top: 1px solid #c5c5c5;
+}
+
+#list-control > a {
+	display: inline-block;
+	width: 24px;
+	height: 19px;
+	padding: 4px 6px;
+	border-right: 1px solid #c5c5c5;
+	outline: none;
+}
+
+#list-control > a:active {
+	background-color: rgba(0,0,0,.125);
+}
+
+#list-control > a.disabled:active {
+	background-color: transparent;
+}
+
+#list-control svg {
+	width: 11px;
+	height: 11px;
+}
+
+#list-control path {
+	stroke: #000;
+	stroke-width: 1;
+	fill: none;
+}
