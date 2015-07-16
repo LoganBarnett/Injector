@@ -28,19 +28,6 @@ section {
  * List
 \* * * * * * */
 
-#list {
-	-webkit-flex: 1;
-	overflow-y: auto;
-}
-
-#list > a {
-	background-color: #fff;
-}
-
-#list > a:nth-child(2n) {
-	background-color: #f5f5f5;
-}
-
 #list-control .disabled path {
 	stroke: #c5c5c5;
 }

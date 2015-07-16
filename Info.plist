@@ -35,7 +35,7 @@
 		<array>
 			<dict>
 				<key>Filename</key>
-				<string>manage/popover.html</string>
+				<string>popover/popover.html</string>
 				<key>Height</key>
 				<real>164</real>
 				<key>Identifier</key>

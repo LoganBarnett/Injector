@@ -10,13 +10,13 @@
 		selection = null;
 	
 	function addLinkHandler( event ) {
-		global.launchManager( "new" );
+		global.launchManagerNew();
 		safari.self.hide();
 	}
 	
 	function editLinkHandler( event ) {
 		if( selection !== null ) {
-			global.launchManager( event.srcElement.id );
+			global.launchManagerEdit( selection.id );
 			safari.self.hide();
 		}
 	}

@@ -25,7 +25,19 @@ body {
  * List
 \* * * * * * */
 
+#list-container {
+	position: relative;
+	-webkit-flex: 1;
+	overflow-y: auto;
+}
+
 #list {
+	/* Can't seem to set any sort of height or min-height
+	 * inside of a flexed element without this */
+	position: absolute;
+	width: 100%;
+	
+	min-height: 100%;
 	background-size: 100% 72px;
 	background-image: linear-gradient(180deg, transparent, transparent 50%, rgba(0,0,0,.03125) 50%);
 }

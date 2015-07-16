@@ -67,37 +67,42 @@ function sanitizeDomains( domains ) {
 	
 	for( i = 0; i < domains.length; i++ ) {
 
-		/* Breakdown of the capturing groups in the below regular expression:
-		 1 - protocol + ://
-		 2 - subdomain(s) or www. + domain + extension(s)
-		 3 - path on domain
-		 */
-		url = /^([\w\*]+:\/\/)?([\d\w\-\.:\*]+)([^\s]*)$/.exec( domains[i] );
-		
-		// No match: assume invalid url and skip
-		if( url === null ) {
-			return "";
+		if( domains[i] === "*" ) {
+			result.push( domains[i] );
 		}
-		
-		if( !url[1] ) {
-			url[1] = "http://";
+		else {
+			/* Breakdown of the capturing groups in the below regular expression:
+			 1 - protocol + ://
+			 2 - subdomain(s) or www. + domain + extension(s)
+			 3 - path on domain
+			 */
+			url = /^([\w\*]+:\/\/)?([\d\w\-\.:\*]+)([^\s]*)$/.exec( domains[i] );
+			
+			// No match: assume invalid url and skip
+			if( url === null ) {
+				continue;
+			}
+			
+			if( !url[1] ) {
+				url[1] = "http://";
+			}
+			
+			/* If the full domain includes exactly one dot, it must have an extension and
+			   no subdomain, which means we need to prepend with something like *. */
+			if( ( url[2].match( /\./g ) || [] ).length === 1 ) {
+				url[2] = "*." + url[2];
+			}
+			
+			// Domains need a trailing slash
+			if( url[3].length === 0 ) {
+				url[3] = "/";
+			}
+			else if( url[3][0] !== "/" ) {
+				url[3] = "/" + url[3];
+			}
+			
+			result.push( url[1] + url[2] + url[3] );
 		}
-		
-		/* If the full domain includes exactly one dot, it must have an extension and
-		   no subdomain, which means we need to prepend with something like *. */
-		if( ( url[2].match( /\./g ) || [] ).length === 1 ) {
-			url[2] = "*." + url[2];
-		}
-		
-		// Domains need a trailing slash
-		if( url[3].length === 0 ) {
-			url[3] = "/";
-		}
-		else if( url[3][0] !== "/" ) {
-			url[3] = "/" + url[3];
-		}
-
-		result.push( url[1] + url[2] + url[3] );
 	}
 	
 	return result;

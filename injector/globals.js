@@ -18,14 +18,14 @@ function handleCommand( event ) {
 		return;
 	}
 	
-	var currentTab = safari.application.activeBrowserWindow.activeTab,
-		url = currentTab.url;
+	var activeTab = safari.application.activeBrowserWindow.activeTab,
+		url = activeTab.url;
 	
 	if( url === undefined ) {
-		launchManager( "new" );
+		launchManager( "" );
 	}
 	else if( url === "" ) {
-		currentTab.url = managerURL;
+		activeTab.url = managerURL;
 	}
 	else {
 		var injections = [],
@@ -47,16 +47,12 @@ function handleCommand( event ) {
 				break;
 			}
 		case "launch-injector":
-			var hash;
-			
 			if( injections.length ) {
-				hash = injections[0].key;
+				launchManagerEdit( injections[0].key );
 			}
 			else {
-				hash = "new," + encodeURIComponent( url );
+				launchManagerNew();
 			}
-			
-			launchManager( hash );
 			break;
 		default:
 			break;
@@ -65,10 +61,16 @@ function handleCommand( event ) {
 }
 
 function launchManager( hash ) {
-	safari.application.activeBrowserWindow.openTab().url = managerURL + "#" + hash;
+	safari.application.activeBrowserWindow.openTab().url = managerURL + hash;
 }
 
-// BEGIN DEPRECATION
+function launchManagerNew() {
+	launchManager( "#new," + encodeURIComponent( safari.application.activeBrowserWindow.activeTab.url ) );
+}
+
+function launchManagerEdit( key ) {
+	launchManager( "#" + key );
+}
 
 function getItem( key ) {
 	return styleStorage.getItem( key );
@@ -85,7 +87,6 @@ function setItemEnabled( key, enabled ) {
 }
 
 function handleMessage( event ) {
-	console.log(event.name);
 	switch( event.name ) {
 	case "reloadStyles":
 		reloadStyles();
@@ -112,8 +113,6 @@ function handleMessage( event ) {
 	}
 }
 
-// END DEPRECATION
-
 function handleValidate( event ) {
 	switch( event.target.identifier ) {
 	case "LaunchInjector":
@@ -125,7 +124,7 @@ function handleValidate( event ) {
 }
 
 safari.application.addEventListener( "command", handleCommand, false );
-safari.application.addEventListener( "message", handleMessage, false ); // DEPRECATED
+safari.application.addEventListener( "message", handleMessage, false );
 safari.application.addEventListener( "validate", handleValidate, false );
 styleStorage.update();
 reloadStyles();
