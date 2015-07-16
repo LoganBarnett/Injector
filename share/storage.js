@@ -44,7 +44,7 @@ var styleStorage = {
 					styleStorage.setItem( key, data );
 				} );
 				break;
-			case "1.7":
+			case "1.6":
 				styleStorage.each( function( key, data ) {
 					data.includes = sanitizeDomains( data.domains );
 					data.excludes = sanitizeDomains( data.excludes );
@@ -84,9 +84,9 @@ function sanitizeDomains( domains ) {
 		}
 		
 		/* If the full domain includes exactly one dot, it must have an extension and
-		   no subdomain, which means we need to prepend with www. */
+		   no subdomain, which means we need to prepend with something like *. */
 		if( ( url[2].match( /\./g ) || [] ).length === 1 ) {
-			url[2] = "www." + url[2];
+			url[2] = "*." + url[2];
 		}
 		
 		// Domains need a trailing slash
