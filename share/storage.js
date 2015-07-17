@@ -45,8 +45,9 @@ var styleStorage = {
 				} );
 				break;
 			case "1.6":
+			case "1.7":
 				styleStorage.each( function( key, data ) {
-					data.includes = sanitizeDomains( data.domains );
+					data.includes = sanitizeDomains( data.includes );
 					data.excludes = sanitizeDomains( data.excludes );
 				} );
 				break;
