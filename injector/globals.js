@@ -33,7 +33,7 @@ function handleCommand( event ) {
 		
 		styleStorage.each( function( key, data ) {				
 			for( i = 0; i < data.includes.length; i++ ) {
-				if( new RegExp( data.includes[i] ).test( url ) ) {
+				if( matchesSimplePattern( data.includes[i], url ) ) {
 					injections.push( { key: key, data: data } );
 				}
 			}
@@ -58,6 +58,26 @@ function handleCommand( event ) {
 			break;
 		}
 	}
+}
+
+function matchesSimplePattern( pattern, string ) {
+	var specialChars = "\\^$*+?.()|{}[]";
+	var regexChars = "^";
+	for( var i = 0; i < pattern.length; i++ ) {
+		var c = pattern.charAt( i );
+		switch( c ) {
+			case '*':
+				regexChars += ".*";
+				break;
+			default:
+				if( specialChars.indexOf( c ) >= 0 ) {
+					regexChars += "\\";
+				}
+				regexChars += c;
+		}
+	}
+	regexChars += "$";
+	return new RegExp( regexChars ).test( string );
 }
 
 function launchManager( hash ) {
