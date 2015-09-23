@@ -107,8 +107,8 @@
 		safari.self.tab.dispatchMessage( "reloadStyles" );
 	}
 	
-	function setTitle( title ) {
-		title.textContent = title;
+	function setTitle( newTitle ) {
+		title.textContent = newTitle;
 	}
 	
 	function setLabelState( includes, excludes, styles, script ) {
