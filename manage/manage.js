@@ -49,6 +49,7 @@
 	function clickLabel() {
 		if( this.classList.contains( "hidden" ) ) {
 			showLabel( this );
+			this.nextElementSibling.focus();
 		}
 		else {
 			hideLabel( this );
@@ -143,7 +144,7 @@
 	function markSelection( element ) {
 		if( element !== selection ) {
 			if( selection === null ) {
-				deleteLink.classList.remove( "disabled" );
+				deleteLink.disabled = false;
 			}
 			else {
 				selection.classList.remove( "selection" );
@@ -159,7 +160,7 @@
 			selection.classList.remove( "selection" );
 			selection = null;
 		}
-		deleteLink.classList.add( "disabled" );
+		deleteLink.disabled = true;
 	}
 	
 	function constructDataFromForm() {

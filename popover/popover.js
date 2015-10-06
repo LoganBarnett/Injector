@@ -101,7 +101,7 @@
 	function markSelection( element ) {
 		if( element !== selection ) {
 			if( selection === null ) {
-				editLink.classList.remove( "disabled" );
+				editLink.disabled = false;
 			}
 			else {
 				selection.classList.remove( "selection" );
@@ -117,7 +117,7 @@
 			selection.classList.remove( "selection" );
 			selection = null;
 		}
-		editLink.classList.add( "disabled" );
+		editLink.disabled = true;
 	}
 	
 	window.addEventListener( "DOMContentLoaded", start, false );

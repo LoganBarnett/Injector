@@ -28,7 +28,7 @@ section {
  * List
 \* * * * * * */
 
-#list-control .disabled path {
+#list-control :disabled path {
 	stroke: #c5c5c5;
 }
 
@@ -63,12 +63,9 @@ label {
 	color: #555;
 }
 
-.label, textarea {
-	width: 100%;
-}
-
 .label, textarea, input[type="text"] {
 	display: block;
+	width: 100%;
 	border: 1px solid #a5a5a5;
 }
 
@@ -124,11 +121,11 @@ input[type="text"] {
 	border-width: 1px;
 }
 
-textarea[name="includes"], textarea[name="excludes"] {
+#includes, #excludes {
 	height: 50px;
 }
 
-textarea[name="styles"], textarea[name="script"] {
+#styles, #script {
 	height: 200px;
 }
 

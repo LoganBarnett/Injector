@@ -69,20 +69,21 @@ body {
 	border-top: 1px solid #c5c5c5;
 }
 
-#list-control > a {
+#list-control > button {
 	display: inline-block;
 	width: 24px;
 	height: 19px;
 	padding: 4px 6px;
+	border-style: none;
 	border-right: 1px solid #c5c5c5;
-	outline: none;
+	background-color: transparent;
 }
 
-#list-control > a:active {
+#list-control > button:active {
 	background-color: rgba(0,0,0,.125);
 }
 
-#list-control > a.disabled:active {
+#list-control > button:disabled:active {
 	background-color: transparent;
 }
 

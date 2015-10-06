@@ -15,15 +15,15 @@
 				</div>
 			</div>
 			<div id="list-control">
-				<a id="new" href="#new">
+				<button id="new" href="#new">
 					<svg viewBox="0 0 11 11">
 						<path d="M0 5.5h11M5.5 0v11"/>
 					</svg>
-				</a><a id="delete" href="#delete">
+				</button><button id="delete" href="#delete">
 					<svg viewBox="0 0 11 11">
 						<path d="M0 5.5h11"/>
 					</svg>
-				</a>
+				</button>
 			</div>
 		</aside>
 		<section>
@@ -31,11 +31,11 @@
 			<form id="form">
 				<p>
 					<label for="enabled">Enabled</label>
-					<input name="enabled" type="checkbox">
+					<input name="enabled" id="enabled" type="checkbox">
 				</p>
 				<p>
 					<label for="name">Name</label>
-					<input name="name" type="text" placeholder="Untitled">
+					<input name="name" id="name" type="text" placeholder="Untitled">
 				</p>
 				<p>
 					<label for="includes">URLs</label>
@@ -43,12 +43,12 @@
 						<svg viewBox="0 0 7 8"><path d="M0 0v7L6 3.5z"/></svg>
 						Includes
 					</span>
-					<textarea name="includes" placeholder="*"></textarea>
+					<textarea name="includes" id="includes" placeholder="*"></textarea>
 					<span class="label" id="label-excludes">
 						<svg viewBox="0 0 7 8"><path d="M0 0v7L6 3.5z"/></svg>
 						Excludes
 					</span>
-					<textarea name="excludes"></textarea>
+					<textarea name="excludes" id="excludes"></textarea>
 					<span class="description">
 						One rule per line. Use * for wildcard.
 						<span class="fragment"><strong>Example:</strong> http://*.apple.com/*</span>
@@ -60,7 +60,7 @@
 						<svg viewBox="0 0 7 8"><path d="M0 0v7L6 3.5z"/></svg>
 						CSS
 					</span>
-					<textarea name="styles"></textarea>
+					<textarea name="styles" id="styles"></textarea>
 					<span class="description">
 						To override page style, put <strong>!important</strong>
 						at the end of each style.
@@ -72,13 +72,13 @@
 						<svg viewBox="0 0 7 8"><path d="M0 0v7L6 3.5z"/></svg>
 						JavaScript
 					</span>
-					<textarea name="script"></textarea>
+					<textarea name="script" id="script"></textarea>
 				</p>
 				<p>
 					<label for="onload">Run script on full load</label>
-					<input name="onload" type="checkbox">
+					<input name="onload" id="onload" type="checkbox">
 				</p>
-				<p class="submit">
+				<p>
 					<input name="save" type="submit" value="Save">
 				</p>
 			</form>

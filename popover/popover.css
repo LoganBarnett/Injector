@@ -24,6 +24,6 @@ body {
 	fill: #000;
 }
 
-#list-control .disabled circle {
+#list-control :disabled circle {
 	fill: #c5c5c5;
 }
