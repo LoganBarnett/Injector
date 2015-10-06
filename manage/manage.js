@@ -164,12 +164,14 @@
 	}
 	
 	function constructDataFromForm() {
-		var includes = form.includes.value,
+		var name = form.name.value,
+			includes = form.includes.value,
 			excludes = form.excludes.value,
 			data = {};
-		data.name = form.name.value;
+		
+		data.name = name.length ? name : "Untitled Injection";
 		data.enabled = form.enabled.checked;
-		data.includes = includes.length ? sanitizeDomains( includes.split( "\n" ) ) : [];
+		data.includes = includes.length ? sanitizeDomains( includes.split( "\n" ) ) : [ "*" ];
 		data.excludes = excludes.length ? sanitizeDomains( excludes.split( "\n" ) ) : [];
 		data.styles = form.styles.value;
 		data.script = form.script.value;
@@ -188,24 +190,21 @@
 	}
 	
 	function bindForm( data, callback ) {
-	
+		
 		populateForm( data );
-	
+		
 		form._submitCallback && form.removeEventListener( "submit", form._submitCallback, false ); // Cleanup
-	
+		
 		form._submitCallback = function( e ) {
 			var formData = constructDataFromForm();
-	
-			if( formData.name && ( formData.styles || formData.script ) && formData.includes ) {
-				populateForm( formData );
-				callback( formData );
-			}
-	
+			populateForm( formData );
+			callback( formData );
+			
 			// Don't refresh the page
 			e.preventDefault();
 			return false;
 		};
-	
+		
 		form.addEventListener( "submit", form._submitCallback, false );
 	}
 	
