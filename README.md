@@ -1,4 +1,4 @@
-A fork of [sirn/usercss](http://github.com/sirn/usercss) which adds script support and removes Mootools.
+A fork of [sirn/usercss](http://github.com/sirn/usercss) which adds an updated, retina-ready UI, custom script support, a toolbar item for toggling active injections, and removes Mootools.
 
 #Injector
 
