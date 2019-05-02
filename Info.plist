@@ -3,13 +3,13 @@
 <plist version="1.0">
 <dict>
 	<key>Author</key>
-	<string>Trevor Behlman</string>
+	<string>Logan Barnett</string>
 	<key>Builder Version</key>
-	<string>10600.6.3</string>
+	<string>14606.3.4</string>
 	<key>CFBundleDisplayName</key>
 	<string>Injector</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.tsbehlman.injector</string>
+	<string>com.logustus.injector</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleShortVersionString</key>
@@ -41,7 +41,7 @@
 				<key>Identifier</key>
 				<string>InjectionSelector</string>
 				<key>Width</key>
-				<real>250</real>
+				<integer>250</integer>
 			</dict>
 		</array>
 		<key>Toolbar Items</key>
@@ -66,7 +66,7 @@
 		<dict/>
 	</dict>
 	<key>DeveloperIdentifier</key>
-	<string>VE6CSLGJ83</string>
+	<string>AKGW4VBM66</string>
 	<key>ExtensionInfoDictionaryVersion</key>
 	<string>1.0</string>
 	<key>Permissions</key>
@@ -80,8 +80,8 @@
 		</dict>
 	</dict>
 	<key>Update Manifest URL</key>
-	<string>http://www.tbehlman.com/safari/updateInjector.plist</string>
+	<string></string>
 	<key>Website</key>
-	<string>http://www.tbehlman.com/</string>
+	<string></string>
 </dict>
 </plist>
